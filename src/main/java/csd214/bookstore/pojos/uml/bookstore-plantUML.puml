@@ -1,0 +1,135 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' no need to add setters and getters since they're obvious and would clutter the diagram
+
+abstract class Editable
+abstract class Publication
+interface SaleableItem
+interface Serializable
+
+
+Ticket -l--|> Editable
+Ticket -l..|> SaleableItem
+Ticket -r..|> Serializable
+Ticket : - price : (double)
+Ticket : - sellCopy()
+note right of Ticket::"sellCopy()"
+  Implements SaleableItem:sellCopy()
+end note
+
+Publication --|> Editable
+Publication -r..|> SaleableItem
+Publication -r..|> Serializable
+
+
+Book --|> Publication
+Magazine --|> Publication
+DiscMag --|> Magazine
+
+SaleableItem : sellCopy()
+SaleableItem : getPrice()
+
+CashTill -l-> SaleableItem
+CashTill : - runningTotal : (double)
+CashTill : + showTotal() : (double)
+CashTill : + CashTill()
+CashTill : + sellItem(SaleableItem s)
+
+Editable : - Scanner input
+Editable : + getInput(String)
+Editable : + getInput(int)
+Editable : + getInput(double)
+Editable : + getInput(boolean)
+Editable : + getInput(Date)
+Editable : + getInput(Enum)
+Editable : + abstract edit()
+Editable : + abstract initialize()
+Editable : + setSystemInput(ByteArrayInputStream testIn)
+Editable : + setSystemOutput(ByteArrayOutputStream testOut)
+
+Publication : - title   : (String)
+Publication : - price   : (double)
+Publication : - copies  : (int)
+Publication : - ISBN-10 : (String)
+
+Publication : + sellCopy()
+Publication : + Publication()
+Publication : + Publication(title, price, copies, ISBN-10)
+Publication : + equals()
+Publication : + hashCode()
+Publication : + toString()
+
+Book : + edit()
+Book : + initialize()
+Book : + sellCopy()
+note left of Book::"edit()"
+  Implements Editable:edit()
+end note
+
+note left of Book::"initialize()"
+  Implements Editable:initialize()
+end note
+
+note left of Book::"sellCopy()"
+  Implements SaleableItem:sellCopy()
+end note
+
+Book : -author : String
+Book : + Book()
+Book : + Book(title, price, copies, author, ISBN-10)
+Book : + equals()
+Book : + hashCode()
+Book : + toString()
+
+Magazine : - orderQty : int
+Magazine : - currIssue: java.util.Date
+Magazine : + edit()
+Magazine : + initialize()
+Magazine : + sellCopy()
+Magazine : + Magazine()
+Magazine : + Magazine(title, price, copies, orderQty, currIssue)
+Magazine : + Magazine(title, price, copies, orderQty)
+Magazine : + equals()
+Magazine : + hashCode()
+Magazine : + toString()
+
+note left of Magazine::"edit()"
+  Overrides Editable:edit()
+end note
+
+note left of Magazine::"initialize()"
+  Overrides Editable:initialize()
+end note
+
+note left of Magazine::"sellCopy()"
+  Implements SaleableItem:sellCopy()
+end note
+
+DiscMag : - hasDisc : boolean
+DiscMag : + edit()
+DiscMag : + initialize()
+DiscMag : + sellCopy()
+DiscMag : + DiscMag()
+DiscMag : + DiscMag(hasDisc)
+DiscMag : + DiscMag(hasDisc, orderQty, currIssue)
+DiscMag : + DiscMag(title, price, copies, hasDisc, orderQty, currIssue)
+DiscMag : + equals()
+DiscMag : + hashCode()
+DiscMag : + toString()
+
+note left of DiscMag::"edit()"
+  Overrides Editable:edit()
+end note
+
+note left of DiscMag::"initialize()"
+  Overrides Editable:initialize()
+end note
+
+note left of DiscMag::"sellCopy()"
+  Implements SaleableItem:sellCopy()
+end note
+
+
+
+@enduml
