@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(name = "product_entity")
 public abstract class ProductEntity extends Editable implements Serializable, SaleableItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
